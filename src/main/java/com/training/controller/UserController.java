@@ -20,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity getAllUsers() {
+    public ResponseEntity getAllUsers(@RequestParam String token) {
         List<User> users = new ArrayList<>();
 
         userService.getAllUser().forEach(user -> {

@@ -14,25 +14,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/")
 public class UserLoginController {
-    String tokenAuthentication;
 
     @Autowired
     private UserLoginService service;
 
     @PostMapping("/login")
     public ResponseEntity<?> createToken( @RequestBody UserLogin userLogin) {
-        Optional<UserLogin> _userLogin = service.findUser(userLogin.getEmail(), userLogin.getPassword());
-        if (_userLogin.isPresent()) {
-            tokenAuthentication = _userLogin.get().getEmail() + "-" + _userLogin.get().getPassword();
-            LoginInterceptor.tokenAuthentication = tokenAuthentication;
-            System.out.println(LoginInterceptor.tokenAuthentication);
+        Optional<UserLogin> userData = service.findUser(userLogin.getEmail(), userLogin.getPassword());
+        if (userData.isPresent()) {
+            String tokenAuthentication = userData.get().getEmail() + "-" + userData.get().getPassword();
             return ResponseEntity.ok(tokenAuthentication);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/login/get")
-    public ResponseEntity<HttpStatus> getData(@RequestParam String token) {
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
