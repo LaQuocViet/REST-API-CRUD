@@ -1,9 +1,7 @@
 package com.training.interceptor;
 
-import com.training.model.User;
-import com.training.model.UserLogin;
-import com.training.service.UserLoginService;
-import com.training.service.UserService;
+import com.training.model.Account;
+import com.training.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -11,28 +9,32 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
+public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private UserLoginService service;
+    private AccountService service;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("pre");
+        String tokenAuthentication = request.getParameter("token");
+        if(tokenAuthentication == null) {
+            response.getWriter().write("You must attach token");
+            return false;
+        }
 
-        String[] token = request.getParameter("token").split("-");
-        String email = token[0];
-        String password = token[1];
+        String[] account = tokenAuthentication.split("-");
 
-        Optional<UserLogin> userData = service.findUser(email, password);
-        if (userData.isPresent()) {
+        Optional<Account> accountData = service.findAccount(account[0], account[1]);
+        if (accountData.isPresent()) {
+            response.getWriter().write("Login success!");
             return true;
         }
+
+        response.getWriter().write("Login failed!");
         return false;
     }
 

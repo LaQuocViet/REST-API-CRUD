@@ -1,5 +1,8 @@
 package com.training.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,40 +15,41 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
+@ApiModel(value = "User model")
 public class User {
 
     @Id
-    @Column(name = "Id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(notes = "Id auto increase upon create new")
     private int id;
 
-    @Column(name = "First_Name")
+    @Column(name = "first_Name", nullable = false)
     private String firstName;
 
-    @Column(name = "Last_Name")
+    @Column(name = "last_Name", nullable = false)
     private String lastName;
 
-    @Column(name = "Birthdate")
-    //@Temporal(TemporalType.DATE)
+    @Column(name = "birthdate", nullable = false)
     private LocalDate birthDate;
 
-    @Column(name = "Sex")
+    @Column(name = "sex", nullable = false)
     private boolean sex;
 
-    @Column(name = "Address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "Email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "Job")
+    @Column(name = "job", nullable = false)
     private String job;
 
-    @Column(name = "Phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "Marital_Status")
+    @Column(name = "marital_Status", nullable = false)
     private int maritalStatus;
 
     public User() {
