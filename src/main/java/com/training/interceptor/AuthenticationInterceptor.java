@@ -2,6 +2,7 @@ package com.training.interceptor;
 
 import com.training.model.Account;
 import com.training.service.AccountService;
+import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
