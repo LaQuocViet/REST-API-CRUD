@@ -34,7 +34,7 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 204, message = "no content"),
-            @ApiResponse(code = 404, message = "not found")
+            @ApiResponse(code = 400, message = "bad request")
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody Account account) {
@@ -57,9 +57,5 @@ public class AccountController {
 //        });
 //        return errors;
 //    }
-//
-//    @GetMapping("/hello")
-//    public String hello () {
-//        return "Hello";
-//    }
+
 }

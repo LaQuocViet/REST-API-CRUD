@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,6 @@ public class UserController {
     @ApiOperation(value = "Get all users", response = List.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 204, message = "no content"),
             @ApiResponse(code = 404, message = "not found")
     })
     @GetMapping("/users")
@@ -37,11 +37,6 @@ public class UserController {
         userService.getAllUser().forEach(user -> {
             users.add(user);
         });
-
-        if (users.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-
         return ResponseEntity.ok(users);
     }
 
@@ -52,7 +47,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "not found")
     })
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable("id") Integer id) {
+    public ResponseEntity<User> findUserById(@Valid @PathVariable("id") Integer id) {
         Optional<User> userData = userService.findUserById(id);
 
         if (userData.isPresent()) {
@@ -64,12 +59,12 @@ public class UserController {
     @ApiOperation(value = "Post a user", response = User.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "CREATED"),
-            @ApiResponse(code = 500, message = "INTERNAL_SERVER_ERROR")
+            @ApiResponse(code = 400, message = "BAD_REQUEST")
     })
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         try {
-            User _user = userService.saveUser(new User(
+            User user1 = userService.saveUser(new User(
                     user.getFirstName(),
                     user.getLastName(),
                     user.getBirthDate(),
@@ -79,9 +74,9 @@ public class UserController {
                     user.getJob(),
                     user.getPhone(),
                     user.getMaritalStatus()));
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+            return new ResponseEntity<>(user1, HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -94,7 +89,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "INTERNAL_SERVER_ERROR")
     })
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> update(@PathVariable("id") Integer id, @RequestBody User user) {
+    public ResponseEntity<User> update(@Valid @PathVariable("id") Integer id, @RequestBody User user) {
         Optional<User> userData = userService.findUserById(id);
 
         if (userData.isPresent()) {
@@ -127,7 +122,7 @@ public class UserController {
             @ApiResponse(code = 204, message = "No CONTENT")
     })
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable("id") Integer id) {
+    public ResponseEntity<HttpStatus> deleteUserById(@Valid @PathVariable("id") Integer id) {
         Optional<User> userData = userService.findUserById(id);
         if (userData.isPresent()) {
             userService.deleteUserById(id);

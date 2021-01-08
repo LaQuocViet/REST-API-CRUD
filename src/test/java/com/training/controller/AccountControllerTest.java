@@ -61,16 +61,61 @@ public class AccountControllerTest {
 
     @Test
     public void loginNoContentAPI() throws Exception {
-        Optional<Account> account = Optional.of(new Account("laquocviet9x@gmail.com", "12345678"));
+        Optional<Account> account = Optional.empty();
         Mockito.doReturn(account).when(accountService).findAccount(Mockito.anyString(), Mockito.anyString());
         mockMvc.perform(
                 MockMvcRequestBuilders
                         .post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(Utils.convertToJsonString(account.get()))
+                        .content(Utils.convertToJsonString(new Account("laquocviet9x@gmail.com", "12345678")))
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(account.get().getEmail() + "-" + account.get().getPassword()))
+                .andExpect(MockMvcResultMatchers.status().isNoContent())
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void loginEmailNullAPI() throws Exception {
+        Optional<Account> account = Optional.empty();
+        Mockito.doReturn(account).when(accountService).findAccount(Mockito.anyString(), Mockito.anyString());
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Utils.convertToJsonString(new Account(null, "12345678")))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andDo(print())
+                .andReturn();
+    }
+
+
+    @Test
+    public void loginPasswordNullAPI() throws Exception {
+        Optional<Account> account = Optional.empty();
+        Mockito.doReturn(account).when(accountService).findAccount(Mockito.anyString(), Mockito.anyString());
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Utils.convertToJsonString(new Account("laquocviet9x@gmail.com", null)))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    public void loginEmail_PasswordNullAPI() throws Exception {
+        Optional<Account> account = Optional.empty();
+        Mockito.doReturn(account).when(accountService).findAccount(Mockito.anyString(), Mockito.anyString());
+        mockMvc.perform(
+                MockMvcRequestBuilders
+                        .post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Utils.convertToJsonString(new Account(null, null)))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andDo(print())
                 .andReturn();
     }

@@ -11,6 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -26,27 +30,35 @@ public class User {
     private int id;
 
     @Column(name = "first_Name", nullable = false)
+    @NotBlank(message = "First name not blank")
     private String firstName;
 
     @Column(name = "last_Name", nullable = false)
+    @NotBlank(message = "First name not blank")
     private String lastName;
 
     @Column(name = "birthdate", nullable = false)
-    private LocalDate birthDate;
+    @NotBlank(message = "First name not blank")
+    private String birthDate;
 
     @Column(name = "sex", nullable = false)
     private boolean sex;
 
     @Column(name = "address", nullable = false)
+    @NotBlank(message = "First name not blank")
     private String address;
 
     @Column(name = "email", nullable = false)
+    @NotBlank(message = "First name not blank")
     private String email;
 
     @Column(name = "job", nullable = false)
+    @NotBlank(message = "First name not blank")
     private String job;
 
     @Column(name = "phone", nullable = false)
+    @NotBlank(message = "First name not blank")
+    @Pattern(regexp = "^0(1\\d{9}|9\\d{8})$")
     private String phone;
 
     @Column(name = "marital_Status", nullable = false)
@@ -56,7 +68,7 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, LocalDate birthDate, boolean sex, String address, String email
+    public User(String firstName, String lastName, String birthDate, boolean sex, String address, String email
             , String job, String phone, int maritalStatus) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -93,11 +105,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

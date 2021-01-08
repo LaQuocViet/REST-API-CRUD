@@ -12,15 +12,15 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private AuthenticationInterceptor interceptor;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(interceptor)
-                .excludePathPatterns("/login")
-                .excludePathPatterns(
-                        "/v2/api-docs",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html",
-                        "/webjars/**"
-                );
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(interceptor)
+//                .excludePathPatterns("/login")
+//                .excludePathPatterns(
+//                        "/v2/api-docs",
+//                        "/swagger-resources/**",
+//                        "/swagger-ui.html",
+//                        "/webjars/**"
+//                );
+//    }
 }
